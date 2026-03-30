@@ -1,61 +1,97 @@
 export default function NosotrosPage() {
   return (
-    <div className="w-full">
+    <div className="w-full bg-[#f5f0e8] text-[#2C2C2C]">
 
       {/* HERO */}
-      <section className="bg-stone-100 py-20 px-6 text-center">
-        <h1 className="text-5xl font-bold mb-6">Sobre Nosotros</h1>
-        <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-          Aquí puedes agregar una breve introducción de tu marca, lo que haces
-          y lo que te hace especial.
+      <section className="py-24 px-6 text-center">
+        <h1 className="text-5xl font-serif mb-6">Sobre el taller</h1>
+
+        <div className="w-16 h-[2px] bg-terracotta mx-auto mb-6 opacity-60"></div>
+
+        <p className="text-lg max-w-2xl mx-auto text-[#5A4A3F] leading-relaxed">
+          Cerámica artesanal creada desde el sur de Chile, donde cada pieza
+          nace del tiempo, el fuego y la intención.
         </p>
       </section>
 
       {/* HISTORIA */}
       <section className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
         
-        {/* TEXTO */}
-        <div>
-          <h2 className="text-3xl font-semibold mb-4">Nuestra Historia</h2>
-          <p className="text-stone-600 leading-relaxed">
-            Aquí puedes agregar un poco de tu historia, cómo comenzaste,
-            tu proceso creativo, inspiración, etc.
+        {/* 📝 TEXTO */}
+        <div className="space-y-6">
+          <h2 className="text-3xl font-serif">El origen</h2>
+
+          <p className="text-[#5A4A3F] leading-relaxed">
+            Soy Juan Pablo, ceramista autodidacta desde el 2022, viviendo y trabajando en la XIV región de Chile. 
+            Mi trabajo se desarrolla principalmente en torno alfarero, donde doy forma a piezas que combinan funcionalidad y expresión personal.
+          </p>
+
+          <p className="text-[#5A4A3F] leading-relaxed">
+            Me inspira profundamente la biodiversidad del país, sus colores, texturas y formas, 
+            que ofrecen una fuente inagotable de ideas. Esta influencia se refleja en cada pieza, 
+            buscando transmitir algo orgánico y auténtico.
           </p>
         </div>
 
-        {/* IMAGEN */}
-        <div className="h-80 bg-gray-200 rounded-3xl flex items-center justify-center">
-          <span className="text-gray-500">Imagen aquí</span>
+        {/* 🖼 IMAGEN */}
+        <div className="h-80 rounded-2xl overflow-hidden bg-gray-200 flex items-center justify-center">
+          <span className="text-gray-500">Foto del taller / proceso</span>
         </div>
 
       </section>
 
-      {/* VALORES */}
+      {/* PROCESO */}
+      <section className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+
+        {/* 🖼 IMAGEN */}
+        <div className="h-80 rounded-2xl overflow-hidden bg-gray-200 flex items-center justify-center">
+          <span className="text-gray-500">Torno / piezas en proceso</span>
+        </div>
+
+        {/* 📝 TEXTO */}
+        <div className="space-y-6">
+          <h2 className="text-3xl font-serif">El proceso</h2>
+
+          <p className="text-[#5A4A3F] leading-relaxed">
+            Confecciono una amplia variedad de piezas y formas, desde tazas, cuencos y platos, 
+            hasta lámparas, floreros y piezas más experimentales. Cada una es única y pintada a mano, 
+            lo que le da un carácter irrepetible.
+          </p>
+
+          <p className="text-[#5A4A3F] leading-relaxed">
+            Trabajo principalmente con gres (arcilla de alta temperatura), valorando las técnicas 
+            y procesos detrás de la cerámica. Cada etapa requiere paciencia, tiempo y dedicación.
+          </p>
+        </div>
+
+      </section>
+
+      {/* VALORES / FILOSOFÍA */}
       <section className="bg-white py-20 px-6">
-        <h2 className="text-3xl font-semibold text-center mb-12">
-          Nuestros Valores
+        <h2 className="text-3xl font-serif text-center mb-12">
+          Filosofía del taller
         </h2>
 
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-          
-          <div className="p-6 bg-stone-50 rounded-2xl shadow">
-            <h3 className="font-semibold text-xl mb-2">Calidad</h3>
-            <p className="text-stone-600">
-              Puedes describir la calidad de tus productos.
+
+          <div className="p-6 bg-[#f5f0e8] rounded-2xl shadow">
+            <h3 className="font-semibold text-xl mb-2">Hecho a mano</h3>
+            <p className="text-[#5A4A3F]">
+              Cada pieza es trabajada manualmente, respetando el ritmo del material y el proceso.
             </p>
           </div>
 
-          <div className="p-6 bg-stone-50 rounded-2xl shadow">
-            <h3 className="font-semibold text-xl mb-2">Artesanía</h3>
-            <p className="text-stone-600">
-              Explica el proceso artesanal o único.
+          <div className="p-6 bg-[#f5f0e8] rounded-2xl shadow">
+            <h3 className="font-semibold text-xl mb-2">Imperfección</h3>
+            <p className="text-[#5A4A3F]">
+              Las variaciones y detalles hacen única cada pieza, reflejando su origen artesanal.
             </p>
           </div>
 
-          <div className="p-6 bg-stone-50 rounded-2xl shadow">
-            <h3 className="font-semibold text-xl mb-2">Pasión</h3>
-            <p className="text-stone-600">
-              Cuenta lo que te motiva a crear.
+          <div className="p-6 bg-[#f5f0e8] rounded-2xl shadow">
+            <h3 className="font-semibold text-xl mb-2">Tiempo</h3>
+            <p className="text-[#5A4A3F]">
+              El proceso no se apura. Cada etapa —modelado, secado, cocción— tiene su propio ritmo.
             </p>
           </div>
 
@@ -63,19 +99,20 @@ export default function NosotrosPage() {
       </section>
 
       {/* CTA FINAL */}
-      <section className="bg-orange-500 text-white py-20 px-6 text-center">
-        <h2 className="text-3xl font-semibold mb-4">
-          Descubre nuestras piezas
+      <section className="bg-[#3B2F2F] text-white py-24 px-6 text-center">
+        <h2 className="text-3xl font-serif mb-4">
+          Descubre las piezas
         </h2>
-        <p className="mb-6">
-          Explora nuestra tienda y encuentra algo único.
+
+        <p className="mb-6 text-[#F5EFE6]">
+          Cada objeto cuenta una historia. Encuentra el tuyo.
         </p>
 
         <a
           href="/tienda"
-          className="bg-white text-orange-500 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition"
+          className="bg-terracotta px-8 py-3 rounded-md font-medium hover:opacity-90 transition"
         >
-          Ir a la tienda
+          Ver tienda
         </a>
       </section>
 

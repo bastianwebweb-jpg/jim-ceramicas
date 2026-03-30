@@ -4,7 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-
+export const dynamic = "force-dynamic";
 
 export default function RegisterPage() {
   const router = useRouter();

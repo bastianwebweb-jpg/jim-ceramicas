@@ -1,15 +1,10 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabaseClient";
 import { useSearchParams } from "next/navigation";
 
 export const dynamic = "force-dynamic";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 function PerfilContent() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -63,10 +58,7 @@ function PerfilContent() {
           {orders.map((order) => (
             <div
               key={order.id}
-              className="bg-white/70 backdrop-blur-md p-6 rounded-2xl 
-              shadow-lg hover:shadow-2xl 
-              transition-all duration-300 
-              border border-white/30"
+              className="bg-white/70 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-white/30"
             >
               <div className="flex justify-between mb-4">
                 <p className="font-semibold">
