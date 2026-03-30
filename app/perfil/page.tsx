@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useSearchParams } from "next/navigation";
+
 export const dynamic = "force-dynamic";
 
 const supabase = createClient(
@@ -10,7 +11,7 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export default function PerfilPage() {
+function PerfilContent() {
   const [orders, setOrders] = useState<any[]>([]);
   const searchParams = useSearchParams();
   const orderId = searchParams.get("order");
@@ -42,9 +43,7 @@ export default function PerfilPage() {
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-20">
-      <h1 className="text-3xl font-bold mb-10">
-        Mis compras
-      </h1>
+      <h1 className="text-3xl font-bold mb-10">Mis compras</h1>
 
       {orderId && (
         <div className="mb-8 p-4 rounded-xl bg-green-100 border border-green-300">
@@ -120,5 +119,13 @@ export default function PerfilPage() {
         </div>
       )}
     </main>
+  );
+}
+
+export default function PerfilPage() {
+  return (
+    <Suspense fallback={<p className="p-10">Cargando...</p>}>
+      <PerfilContent />
+    </Suspense>
   );
 }
