@@ -121,23 +121,69 @@ function PerfilContent() {
                     </p>
                   </div>
 
-                  <p className="mb-2">
-                    Estado:{" "}
-                    <span
-                      className={`font-medium px-2 py-1 rounded-full text-sm
-                      ${
-                        order.status === "pendiente"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : order.status === "enviado"
-                          ? "bg-blue-100 text-blue-700"
-                          : order.status === "entregado"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-600"
-                      }`}
-                    >
-                      {order.status}
-                    </span>
-                  </p>
+                  {order.status === "pendiente" && (
+                  <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <p className="text-sm text-yellow-800 font-medium">
+                      ⏳ Pedido pendiente
+                    </p>
+                    <p className="text-sm text-yellow-700">
+                      Estamos esperando la confirmación del pago.
+                    </p>
+                  </div>
+                )}
+
+                {order.status === "pagado" && (
+                  <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <p className="text-sm text-green-800 font-medium">
+                      💰 Pago confirmado
+                    </p>
+                    <p className="text-sm text-green-700">
+                      Tu pedido está siendo preparado.
+                    </p>
+                  </div>
+                )}
+
+                {order.status === "enviado" && (
+                  <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-sm text-blue-800 font-medium">
+                      📦 Pedido enviado
+                    </p>
+
+                    {order.shipping_company ? (
+                      <p className="text-sm text-blue-700">
+                        Empresa: <span className="font-medium">{order.shipping_company}</span>
+                      </p>
+                    ) : (
+                      <p className="text-sm text-blue-700 italic">
+                        Empresa no especificada
+                      </p>
+                    )}
+
+                    {order.tracking_number ? (
+                      <p className="text-sm text-blue-700">
+                        Seguimiento:{" "}
+                        <span className="font-medium">
+                          {order.tracking_number}
+                        </span>
+                      </p>
+                    ) : (
+                      <p className="text-sm text-blue-700 italic">
+                        Número de seguimiento pendiente
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {order.status === "entregado" && (
+                  <div className="mt-3 p-3 bg-gray-100 border border-gray-300 rounded-lg">
+                    <p className="text-sm text-gray-800 font-medium">
+                      ✅ Pedido entregado
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Esperamos que disfrutes tu pieza ✨
+                    </p>
+                  </div>
+                )}
 
                   <p className="font-bold mb-4 text-[#C46A3C]">
                     Total: ${order.total}
