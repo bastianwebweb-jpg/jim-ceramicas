@@ -262,35 +262,6 @@ export default function AdminPage() {
         </div>
       </div>
 
-      {/* DASHBOARD */}
-      <div className="max-w-6xl mx-auto mb-10 grid md:grid-cols-4 gap-6">
-
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <p className="text-sm text-gray-500">Productos</p>
-          <h3 className="text-2xl font-bold">{stats.totalProducts}</h3>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <p className="text-sm text-gray-500">Stock bajo</p>
-          <h3 className="text-2xl font-bold text-orange-500">
-            {stats.lowStock}
-          </h3>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <p className="text-sm text-gray-500">Órdenes</p>
-          <h3 className="text-2xl font-bold">{stats.totalOrders}</h3>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <p className="text-sm text-gray-500">Ingresos</p>
-          <h3 className="text-2xl font-bold text-terracotta">
-            ${stats.totalRevenue}
-          </h3>
-        </div>
-
-      </div>
-
       {/* FORM */}
       <div className="max-w-6xl mx-auto mb-12 bg-white rounded-2xl shadow-lg p-8">
         <h2 className="text-2xl font-serif mb-6">
