@@ -26,65 +26,6 @@ export default function CartDrawer() {
     0
   );
 
-  // ✅ AHORA ESTÁ DENTRO
-const handleCheckout = async () => {
-  if (cart.length === 0) return;
-
-  try {
-    // 👤 usuario
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    // 🧾 crear orden
-    const { data: order, error: orderError } = await supabase
-      .from("orders")
-      .insert({
-        total,
-        items: cart,
-        status: "pendiente",
-        user_id: user?.id || null,
-      })
-      .select()
-      .single();
-
-    if (orderError) throw orderError;
-
-    // 📦 stock
-    for (const item of cart) {
-      const { error } = await supabase.rpc("decrease_stock", {
-        product_id: item.id,
-        quantity: item.quantity,
-      });
-
-      if (error) throw error;
-    }
-
-    // 📩 email
-    await fetch("/api/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: user?.email || "test@email.com",
-      }),
-    });
-
-    // 🧹 limpiar UI
-    clearCart();
-    closeCart();
-
-    // 🚀 REDIRECCIÓN PRO
-    router.push(`/perfil?order=${order.id}`);
-
-  } catch (err) {
-    console.error(err);
-    alert("Error al procesar la compra");
-  }
-};
-
-
   return (
     <>
       {isOpen && (
@@ -186,13 +127,16 @@ const handleCheckout = async () => {
             {cart.length > 0 && (
               <div className="mt-4">
                 <button
-                  onClick={handleCheckout}
+                  onClick={() => {
+                    closeCart(); // 🔥 UX pro
+                    router.push("/checkout");
+                  }}
                   className="w-full bg-terracotta text-white py-3 rounded-xl 
                   shadow-lg hover:shadow-2xl 
                   hover:scale-[1.02] active:scale-95 
                   transition-all duration-300"
                 >
-                  Finalizar compra
+                  Ir a pagar
                 </button>
               </div>
             )}
