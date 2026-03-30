@@ -1,27 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCart } from "@/context/CartContext";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
-
-type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-};
+import { useEffect, useState } from "react";
 
 export default function CheckoutPage() {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const { cart, clearCart } = useCart(); // 🔥 usamos contexto
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // 🛒 cargar carrito (localStorage)
   useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) setCart(JSON.parse(storedCart));
-
     const getUser = async () => {
       const {
         data: { user },
@@ -43,8 +33,9 @@ export default function CheckoutPage() {
     0
   );
 
-  // 🧾 crear pedido
   const handleOrder = async () => {
+    if (cart.length === 0) return;
+
     setLoading(true);
 
     const { data, error } = await supabase
@@ -67,10 +58,9 @@ export default function CheckoutPage() {
       return;
     }
 
-    // limpiar carrito
-    localStorage.removeItem("cart");
+    // 🔥 limpiar carrito REAL
+    clearCart();
 
-    // redirigir a perfil con mensaje
     router.push(`/perfil?order=${data.id}`);
   };
 
@@ -83,21 +73,25 @@ export default function CheckoutPage() {
           Tu pedido
         </h1>
 
-        <div className="flex flex-col gap-4">
-          {cart.map((item) => (
-            <div
-              key={item.id}
-              className="flex justify-between border-b pb-3"
-            >
-              <span>
-                {item.name} x{item.quantity}
-              </span>
-              <span>
-                ${item.price * item.quantity}
-              </span>
-            </div>
-          ))}
-        </div>
+        {cart.length === 0 ? (
+          <p className="text-gray-500">Tu carrito está vacío</p>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {cart.map((item) => (
+              <div
+                key={item.id}
+                className="flex justify-between border-b pb-3"
+              >
+                <span>
+                  {item.name} x{item.quantity}
+                </span>
+                <span>
+                  ${item.price * item.quantity}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="flex justify-between mt-6 text-xl font-bold">
           <span>Total</span>
