@@ -208,21 +208,58 @@ export default function AdminPage() {
           Gestiona tus piezas artesanales
         </p>
       </div>
-      {/* boton de ordenes y pedidos admin */}
-      <div className="bg-white p-6 rounded-2xl shadow border border-[#e5ded3] flex flex-col justify-between">
-        <div>
-          <p className="text-sm text-gray-500">Pedidos</p>
-          <h3 className="text-2xl font-bold">
-            {stats.totalOrders}
+      {/* DASHBOARD 2 */}
+      <div className="max-w-6xl mx-auto mb-10 grid md:grid-cols-4 gap-6">
+
+        {/* 📦 PRODUCTOS */}
+        <div className="bg-white p-6 rounded-2xl shadow border border-[#e5ded3]">
+          <p className="text-sm text-gray-500">Productos</p>
+          <h3 className="text-2xl font-bold">{stats.totalProducts}</h3>
+        </div>
+
+        {/* ⚠️ STOCK */}
+        <div className="bg-white p-6 rounded-2xl shadow border border-[#e5ded3]">
+          <p className="text-sm text-gray-500">Stock bajo</p>
+          <h3 className="text-2xl font-bold text-orange-500">
+            {stats.lowStock}
           </h3>
         </div>
 
-        <Link
-          href="/admin/orders"
-          className="mt-4 inline-block text-center bg-black text-white py-2 rounded-lg hover:opacity-90"
-        >
-          Gestionar pedidos
-        </Link>
+        {/* 🛒 ÓRDENES */}
+        <div className="bg-white p-6 rounded-2xl shadow border border-[#e5ded3]">
+          <p className="text-sm text-gray-500">Órdenes</p>
+          <h3 className="text-2xl font-bold">{stats.totalOrders}</h3>
+        </div>
+
+        {/* 💰 INGRESOS */}
+        <div className="bg-white p-6 rounded-2xl shadow border border-[#e5ded3]">
+          <p className="text-sm text-gray-500">Ingresos</p>
+          <h3 className="text-2xl font-bold text-terracotta">
+            ${stats.totalRevenue}
+          </h3>
+        </div>
+
+      </div>
+
+      {/* 🚀 ACCESO RÁPIDO A PEDIDOS */}
+      <div className="max-w-6xl mx-auto mb-10">
+        <div className="bg-gradient-to-r from-black to-[#2C2C2C] text-white p-6 rounded-2xl shadow-lg flex items-center justify-between">
+
+          <div>
+            <p className="text-sm opacity-70">Gestión</p>
+            <h3 className="text-xl font-semibold">
+              Administrar pedidos
+            </h3>
+          </div>
+
+          <Link
+            href="/admin/orders"
+            className="bg-white text-black px-6 py-2 rounded-lg font-medium hover:scale-105 transition"
+          >
+            Ver pedidos
+          </Link>
+
+        </div>
       </div>
 
       {/* DASHBOARD */}
