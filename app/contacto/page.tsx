@@ -11,14 +11,14 @@ export default function ContactoPage() {
         {/* Dirección */}
         <div>
           <h2 className="font-semibold">📍 Dirección</h2>
-          <p>Pichirropulli</p>
+          <p> XIV Región de los Ríos</p>
         </div>
 
         {/* Instagram */}
         <div>
           <h2 className="font-semibold">📸 Instagram</h2>
           <a
-            href="https://instagram.com/"
+            href="https://www.instagram.com/jim.ceramicas/"
             target="_blank"
             className="text-blue-600 underline"
           >
@@ -30,11 +30,11 @@ export default function ContactoPage() {
         <div>
           <h2 className="font-semibold">💬 WhatsApp</h2>
           <a
-            href="https://wa.me/56912345678"
+            href="https://wa.me/56995786212"
             target="_blank"
             className="text-green-600 underline"
           >
-            +56 9 1234 5678
+            +56 9 95786212
           </a>
         </div>
 
