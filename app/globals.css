@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.35s ease-out;
+}
+
+@theme {
+  --color-terracotta: #C46A3C;
+  --color-arcilla: #A65A3A;
+  --color-arena: #E8D9C5;
+  --color-beige: #F5EFE6;
+  --color-carbon: #2C2C2C;
+  --background-color: #F5EFE6;
+}
+
+body {
+  background-color: #F5EFE6;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+}
