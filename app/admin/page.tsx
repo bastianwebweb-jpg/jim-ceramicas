@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient"; // 🔥 mejor en cliente
+import Link from "next/link";
+
 
 type Product = {
   id: string;
@@ -205,6 +207,22 @@ export default function AdminPage() {
         <p className="text-[#5A4A3F]">
           Gestiona tus piezas artesanales
         </p>
+      </div>
+      {/* boton de ordenes y pedidos admin */}
+      <div className="bg-white p-6 rounded-2xl shadow border border-[#e5ded3] flex flex-col justify-between">
+        <div>
+          <p className="text-sm text-gray-500">Pedidos</p>
+          <h3 className="text-2xl font-bold">
+            {stats.totalOrders}
+          </h3>
+        </div>
+
+        <Link
+          href="/admin/orders"
+          className="mt-4 inline-block text-center bg-black text-white py-2 rounded-lg hover:opacity-90"
+        >
+          Gestionar pedidos
+        </Link>
       </div>
 
       {/* DASHBOARD */}
