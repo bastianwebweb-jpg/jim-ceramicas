@@ -89,23 +89,50 @@ export default function Navbar() {
               </Link>
             </>
           ) : (
-            <div className="flex items-center gap-3">
+            <div className="relative group">
 
-              {/* Email usuario */}
-              <Link
-                href="/perfil"
-                className="text-sm font-medium hover:text-terracotta transition max-w-[140px] truncate"
-              >
-                {user.email}
-              </Link>
+              {/* 👤 BOTÓN USUARIO */}
+              <div className="flex items-center gap-2 cursor-pointer">
 
-              {/* Botón logout */}
-              <button
-                onClick={handleLogout}
-                className="text-sm text-red-500 hover:underline"
-              >
-                Salir
-              </button>
+                {/* Avatar */}
+                <div className="w-9 h-9 rounded-full bg-[#3B2F2F] text-white flex items-center justify-center text-sm font-semibold">
+                  {user.email?.charAt(0).toUpperCase()}
+                </div>
+
+                {/* Email */}
+                <span className="text-sm hidden md:block max-w-[120px] truncate">
+                  {user.email}
+                </span>
+              </div>
+
+              {/* 🔽 DROPDOWN */}
+              <div className="absolute right-0 mt-3 w-48 bg-white border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+
+                <div className="p-3 border-b text-xs text-gray-500 truncate">
+                  {user.email}
+                </div>
+
+                <Link
+                  href="/perfil"
+                  className="block px-4 py-3 text-sm hover:bg-gray-100 transition"
+                >
+                  Mi perfil
+                </Link>
+
+                <Link
+                  href="/perfil"
+                  className="block px-4 py-3 text-sm hover:bg-gray-100 transition"
+                >
+                  Mis pedidos
+                </Link>
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-gray-100 transition"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
             </div>
           )}
 
