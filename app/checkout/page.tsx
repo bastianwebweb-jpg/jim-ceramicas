@@ -58,9 +58,36 @@ export default function CheckoutPage() {
       return;
     }
 
-    // 🔥 limpiar carrito REAL
+    // 🔥 MENSAJE WHATSAPP
+    const message = `
+    Hola! 👋 Soy ${user.email}
+
+    Quiero confirmar mi compra en JIM CERÁMICAS 🏺
+
+    🧾 Pedido: ${data.id}
+    💰 Total: $${total}
+
+    🛒 Productos:
+    ${cart.map(item => `• ${item.name} x${item.quantity}`).join("\n")}
+
+    Enviaré el comprobante ahora 🙌
+    `;
+
+    // 🔐 codificar mensaje
+    const encodedMessage = encodeURIComponent(message);
+
+    // 📱 TU NÚMERO (IMPORTANTE CAMBIAR)
+    const phone = "56995786212"; // ← PON TU NÚMERO REAL
+
+    const whatsappURL = `https://wa.me/${phone}?text=${encodedMessage}`;
+
+    // 🧹 limpiar carrito
     clearCart();
 
+    // 🚀 abrir WhatsApp
+    window.open(whatsappURL, "_blank");
+
+    // 👉 opcional: igual llevarlo al perfil
     router.push(`/perfil?order=${data.id}`);
   };
 
