@@ -8,10 +8,10 @@ import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [user, setUser] = useState<any>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    // 🔥 obtener usuario inicial
     const getUser = async () => {
       const {
         data: { user },
@@ -22,7 +22,6 @@ export default function Navbar() {
 
     getUser();
 
-    // 🔥 escuchar cambios en tiempo real
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -38,109 +37,128 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+    <>
+      <nav className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
 
-        {/* 🏺 LOGO */}
-        <Link
-          href="/"
-          className="text-2xl md:text-3xl font-serif text-terracotta tracking-widest"
-        >
-          JIM CERÁMICAS
-        </Link>
+          {/* 🍔 MOBILE MENU */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden text-2xl"
+          >
+            ☰
+          </button>
 
-        {/* 🔗 LINKS */}
-        <div className="hidden md:flex gap-8 text-lg font-medium text-[#3f3f46]">
-          <Link href="/" className="hover:text-terracotta transition">
-            Inicio
+          {/* 🏺 LOGO */}
+          <Link
+            href="/"
+            className="text-xl md:text-3xl font-serif text-terracotta tracking-widest"
+          >
+            JIM CERÁMICAS
           </Link>
 
-          <Link href="/tienda" className="hover:text-terracotta transition">
-            Tienda
-          </Link>
+          {/* 🔗 DESKTOP LINKS */}
+          <div className="hidden md:flex gap-8 text-lg font-medium text-[#3f3f46]">
+            <Link href="/">Inicio</Link>
+            <Link href="/tienda">Tienda</Link>
+            <Link href="/nosotros">Nosotros</Link>
+            <Link href="/contacto">Contacto</Link>
+          </div>
 
-          <Link href="/nosotros" className="hover:text-terracotta transition">
-            Nosotros
-          </Link>
+          {/* 🛒 + USER */}
+          <div className="flex items-center gap-3">
 
-          <Link href="/contacto" className="hover:text-terracotta transition">
-            Contacto
-          </Link>
-        </div>
-
-        {/* 👉 DERECHA */}
-        <div className="flex items-center gap-4">
-
-          {/* 👤 USUARIO */}
-          {!user ? (
-            <>
-              <Link
-                href="/login"
-                className="text-sm hover:text-terracotta transition"
-              >
-                Iniciar sesión
-              </Link>
-
-              <Link
-                href="/register"
-                className="bg-terracotta text-white px-4 py-2 rounded-full text-sm hover:opacity-90 transition"
-              >
-                Crear cuenta
-              </Link>
-            </>
-          ) : (
-            <div className="relative group">
-
-              {/* 👤 BOTÓN USUARIO */}
-              <div className="flex items-center gap-2 cursor-pointer">
-
-                {/* Avatar */}
-                <div className="w-9 h-9 rounded-full bg-[#3B2F2F] text-white flex items-center justify-center text-sm font-semibold">
+            {!user ? (
+              <div className="hidden md:flex gap-3">
+                <Link href="/login" className="text-sm">
+                  Iniciar sesión
+                </Link>
+                <Link
+                  href="/register"
+                  className="bg-terracotta text-white px-4 py-2 rounded-full text-sm"
+                >
+                  Crear cuenta
+                </Link>
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center gap-2">
+                <div className="w-9 h-9 rounded-full bg-[#3B2F2F] text-white flex items-center justify-center text-sm">
                   {user.email?.charAt(0).toUpperCase()}
                 </div>
-
-                {/* Email */}
-                <span className="text-sm hidden md:block max-w-[120px] truncate">
-                  {user.email}
-                </span>
               </div>
+            )}
 
-              {/* 🔽 DROPDOWN */}
-              <div className="absolute right-0 mt-3 w-48 bg-white border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-
-                <div className="p-3 border-b text-xs text-gray-500 truncate">
-                  {user.email}
-                </div>
-
-                <Link
-                  href="/perfil"
-                  className="block px-4 py-3 text-sm hover:bg-gray-100 transition"
-                >
-                  Mi perfil
-                </Link>
-
-                <Link
-                  href="/perfil"
-                  className="block px-4 py-3 text-sm hover:bg-gray-100 transition"
-                >
-                  Mis pedidos
-                </Link>
-
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-gray-100 transition"
-                >
-                  Cerrar sesión
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* 🛒 CARRITO */}
-          <CartButton />
+            <CartButton />
+          </div>
         </div>
+      </nav>
 
-      </div>
-    </nav>
+      {/* 📱 MOBILE MENU PANEL */}
+      {menuOpen && (
+        <div className="fixed inset-0 bg-black/40 z-50">
+          
+          <div className="bg-white w-[75%] h-full p-6 shadow-xl animate-slide-in">
+
+            {/* ❌ cerrar */}
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-lg font-semibold">Menú</h2>
+              <button onClick={() => setMenuOpen(false)}>✖</button>
+            </div>
+
+            {/* LINKS */}
+            <div className="flex flex-col gap-6 text-lg">
+
+              <Link href="/" onClick={() => setMenuOpen(false)}>
+                Inicio
+              </Link>
+
+              <Link href="/tienda" onClick={() => setMenuOpen(false)}>
+                Tienda
+              </Link>
+
+              <Link href="/nosotros" onClick={() => setMenuOpen(false)}>
+                Nosotros
+              </Link>
+
+              <Link href="/contacto" onClick={() => setMenuOpen(false)}>
+                Contacto
+              </Link>
+
+              <hr />
+
+              {!user ? (
+                <>
+                  <Link href="/login" onClick={() => setMenuOpen(false)}>
+                    Iniciar sesión
+                  </Link>
+
+                  <Link href="/register" onClick={() => setMenuOpen(false)}>
+                    Crear cuenta
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link href="/perfil" onClick={() => setMenuOpen(false)}>
+                    Mi perfil
+                  </Link>
+
+                  <Link href="/perfil" onClick={() => setMenuOpen(false)}>
+                    Mis pedidos
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className="text-left text-red-500"
+                  >
+                    Cerrar sesión
+                  </button>
+                </>
+              )}
+
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
