@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="relative h-[70vh] w-full overflow-hidden mt-20">
+      <section className="relative h-[60vh] md:h-[70vh] w-full overflow-hidden mt-16 md:mt-20">
         <Image
           src={images[current]}
           alt="Hero"
@@ -78,7 +78,7 @@ export default function Home() {
             className="mb-6 opacity-90"
           />
 
-          <h1 className="text-5xl md:text-6xl font-serif mb-4 tracking-wide">
+          <h1 className="text-3xl md:text-6xl font-serif mb-4 tracking-wide">
             Hecho a mano, con alma
           </h1>
 
@@ -99,7 +99,7 @@ export default function Home() {
       </section>
 
       {/* 👇 NUEVA SECCIÓN VA AQUÍ */}
-      <section className="py-28 text-center max-w-4xl mx-auto px-6 bg-[#f5f0e8]">
+      <section className="py-16 md:py-28 text-center max-w-4xl mx-auto px-6 bg-[#f5f0e8]">
       
       <h2 className="text-3xl md:text-4xl font-serif mb-6 text-[#2C2C2C]">
         Hecho a mano en Chile
@@ -122,12 +122,12 @@ export default function Home() {
 
         <div className="w-16 h-[2px] bg-terracotta mx-auto mb-10 opacity-60"></div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
           {products.map((product) => (
             <Link key={product.id} href={`/tienda/${product.id}`}>
               <div className="group bg-white border border-[#e5ded3] rounded-2xl overflow-hidden hover:shadow-2xl transition duration-300 cursor-pointer">
                 
-                <div className="relative h-64">
+                <div className="relative h-52 md:h-64">
                   {product.image_url ? (
                     <Image
                       src={product.image_url}
@@ -163,11 +163,11 @@ export default function Home() {
       {/* 🏺 CATEGORÍAS EDITORIALES */}
 
       {/* LOZAS */}
-      <section className="bg-[#3B2F2F] text-white py-24">
-        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+      <section className="bg-[#3B2F2F] text-white py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center">
 
           {/* 🖼 Imagen */}
-          <div className="relative h-80 rounded-xl overflow-hidden">
+          <div className="relative h-56 md:h-80 rounded-xl overflow-hidden">
             <Image
               src="/lozas.jpg"
               alt="Lozas"
@@ -178,7 +178,7 @@ export default function Home() {
 
           {/* 📝 Texto */}
           <div>
-            <h2 className="text-3xl font-serif mb-4">
+            <h2 className="text-2xl md:text-3xl font-serif mb-4">
               Lozas hechas para compartir
             </h2>
 
@@ -189,7 +189,7 @@ export default function Home() {
 
             <Link
               href="/tienda?categoria=lozas"
-              className="inline-block bg-terracotta px-6 py-3 rounded-md font-medium hover:opacity-90 transition"
+              className="inline-block bg-terracotta px-5 py-3 rounded-md font-medium text-sm md:text-base hover:opacity-90 transition"
             >
               Ver lozas
             </Link>
@@ -204,7 +204,7 @@ export default function Home() {
 
 
       {/* TAZAS */}
-      <section className="bg-[#f5f0e8] py-24">
+      <section className="bg-[#f5f0e8] py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
           {/* 📝 Texto */}
@@ -244,7 +244,7 @@ export default function Home() {
 
 
       {/* DECORACIÓN */}
-      <section className="bg-[#3B2F2F] text-white py-24">
+      <section className="bg-[#3B2F2F] text-white py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
           {/* 🖼 Imagen */}
@@ -259,7 +259,7 @@ export default function Home() {
 
           {/* 📝 Texto */}
           <div>
-            <h2 className="text-3xl font-serif mb-4">
+            <h2 className="text-2xl md:text-3xl font-serif mb-4">
               Detalles que dan vida
             </h2>
 
