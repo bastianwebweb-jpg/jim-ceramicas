@@ -230,7 +230,7 @@ export default function Home() {
           </div>
 
           {/* 🖼 Imagen */}
-          <div className="relative h-80 rounded-xl overflow-hidden">
+          <div className="relative h-52 sm:h-60 md:h-80 rounded-xl overflow-hidden">
             <Image
               src="/tazas.jpg"
               alt="Tazas"
@@ -248,7 +248,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
           {/* 🖼 Imagen */}
-          <div className="relative h-80 rounded-xl overflow-hidden">
+          <div className="relative h-52 sm:h-60 md:h-80 rounded-xl overflow-hidden">
             <Image
               src="/decoracion.jpg"
               alt="Decoración"
