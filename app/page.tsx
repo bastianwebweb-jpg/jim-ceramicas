@@ -205,7 +205,7 @@ export default function Home() {
 
       {/* TAZAS */}
       <section className="bg-[#f5f0e8] py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
 
           {/* 📝 Texto */}
           <div>
@@ -245,7 +245,7 @@ export default function Home() {
 
       {/* DECORACIÓN */}
       <section className="bg-[#3B2F2F] text-white py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
 
           {/* 🖼 Imagen */}
           <div className="relative h-52 sm:h-60 md:h-80 rounded-xl overflow-hidden">
