@@ -69,16 +69,30 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
 
             {!user ? (
-              <div className="hidden md:flex gap-3">
-                <Link href="/login" className="text-sm">
+              <div className="hidden md:flex items-center gap-3">
+
+                {/* LOGIN - botón sutil */}
+                <Link
+                  href="/login"
+                  className="text-sm px-4 py-2 rounded-full 
+                  border border-terracotta text-terracotta
+                  hover:bg-terracotta hover:text-white 
+                  transition-all duration-200"
+                >
                   Iniciar sesión
                 </Link>
+
+                {/* REGISTER - botón principal */}
                 <Link
                   href="/register"
-                  className="bg-terracotta text-white px-4 py-2 rounded-full text-sm"
+                  className="text-sm px-4 py-2 rounded-full 
+                  border border-terracotta text-terracotta
+                  hover:bg-terracotta hover:text-white 
+                  transition-all duration-200"
                 >
                   Crear cuenta
                 </Link>
+
               </div>
             ) : (
               <div className="hidden md:flex items-center gap-2">
