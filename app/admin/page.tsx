@@ -201,7 +201,7 @@ export default function AdminPage() {
 
       {/* HEADER */}
       <div className="max-w-6xl mx-auto mb-10">
-        <h1 className="text-4xl font-serif text-[#2C2C2C] mb-2">
+        <h1 className="text-4xl font-serif text-carbon mb-2">
           Panel de Administración
         </h1>
         <p className="text-[#5A4A3F]">
@@ -243,7 +243,7 @@ export default function AdminPage() {
 
       {/* 🚀 ACCESO RÁPIDO A PEDIDOS */}
       <div className="max-w-6xl mx-auto mb-10">
-        <div className="bg-gradient-to-r from-black to-[#2C2C2C] text-white p-6 rounded-2xl shadow-lg flex items-center justify-between">
+        <div className="bg-linear-to-r from-black to-carbon text-white p-6 rounded-2xl shadow-lg flex items-center justify-between">
 
           <div>
             <p className="text-sm opacity-70">Gestión</p>
@@ -259,6 +259,30 @@ export default function AdminPage() {
             Ver pedidos
           </Link>
 
+          <Link 
+            href="/admin/cursos" 
+            className="w-full py-3 px-6 bg-stone-100 text-stone-800 rounded-xl font-bold hover:bg-stone-200 transition-all flex items-center justify-center gap-2 mt-4"
+          >
+            Gestionar Talleres
+          </Link>
+
+        </div>
+      </div>
+{/* 🔥 AGREGA ESTO AQUÍ (DEBAJO DE LA LÍNEA 240) */}
+      <div className="max-w-6xl mx-auto mb-10">
+        <div className="bg-white border border-stone-200 p-6 rounded-2xl shadow-sm flex items-center justify-between">
+          <div>
+            <p className="text-sm text-stone-500">Talleres</p>
+            <h3 className="text-xl font-semibold text-stone-800">
+              Gestionar Cursos
+            </h3>
+          </div>
+          <Link
+            href="/admin/cursos"
+            className="bg-terracotta text-white px-6 py-2 rounded-lg font-medium hover:scale-105 transition"
+          >
+            Editar cursos
+          </Link>
         </div>
       </div>
 
