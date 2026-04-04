@@ -54,7 +54,7 @@ export default function Tienda() {
         <h1 className="text-4xl md:text-6xl font-serif mb-4 tracking-tight">
           Nuestra colección
         </h1>
-        <div className="w-12 h-[1px] bg-terracotta mx-auto mb-6"></div>
+        <div className="w-12 h-px bg-terracotta mx-auto mb-6"></div>
         <p className="max-w-2xl mx-auto text-stone-400 text-lg font-light">
           Descubre piezas únicas hechas a mano, pensadas para acompañar tus rituales diarios.
         </p>
@@ -64,7 +64,7 @@ export default function Tienda() {
       <main className="px-6 py-12 max-w-7xl mx-auto min-h-screen">
 
         {/* BARRA DE FILTROS - Diseño más integrado y sutil */}
-        <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm mb-10 border border-stone-200 sticky top-24 z-10 backdrop-blur-md bg-white/90">
+        <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm mb-10 border border-stone-200 sticky top-24 z-10 backdrop-blur-md">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
 
             {/* 🔍 BUSCADOR */}
@@ -130,7 +130,7 @@ export default function Tienda() {
               <div className="flex flex-col h-full bg-white rounded-2xl overflow-hidden transition-all duration-500">
 
                 {/* IMAGEN - Con mayor altura y efecto sutil */}
-                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-sm">
+                <div className="relative aspect-4/5 overflow-hidden rounded-2xl shadow-sm">
                   <Image
                     src={product.image_url}
                     alt={product.name}

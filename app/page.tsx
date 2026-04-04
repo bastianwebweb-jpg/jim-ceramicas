@@ -97,7 +97,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center text-white px-6">
           <Image src="/logo.png" alt="Logo" width={120} height={120} className="mb-8 drop-shadow-lg" />
           <h1 className="text-4xl md:text-7xl font-serif mb-4 tracking-tight drop-shadow-md">Hecho a mano, con alma</h1>
-          <div className="w-20 h-[2px] bg-terracotta mb-6"></div>
+          <div className="w-20 h-0.5g-terracotta mb-6"></div>
           <p className="max-w-xl mb-8 text-lg md:text-xl font-light opacity-95 leading-relaxed drop-shadow-sm">
             Cerámica artesanal creada con tiempo, dedicación y fuego. <br />
             Cada pieza es única, como el proceso que la forma.
@@ -110,8 +110,8 @@ export default function Home() {
 
       {/* INTRO */}
       <section className="py-24 md:py-32 text-center max-w-5xl mx-auto px-6 bg-[#fdfbf8]">
-        <h2 className="text-3xl md:text-5xl font-serif mb-8 text-[#2C2C2C]">Artesanía desde el corazón de Chile</h2>
-        <div className="w-12 h-[1px] bg-terracotta mx-auto mb-8"></div>
+        <h2 className="text-3xl md:text-5xl font-serif mb-8 text-carbon">Artesanía desde el corazón de Chile</h2>
+        <div className="w-12 h-px bg-terracotta mx-auto mb-8"></div>
         <p className="text-lg md:text-xl leading-relaxed text-[#5A4A3F] max-w-3xl mx-auto italic">
           "Cada pieza nace de un proceso lento y consciente. Moldeada a mano,
           marcada por el fuego y única en su forma, como todo lo que tiene historia."
@@ -146,27 +146,26 @@ export default function Home() {
                 </div>
               </div>
 
-              <button 
-                onClick={handleReserve}
-                disabled={activeCourse.available_slots === 0}
-                className={`px-10 py-5 rounded-full font-bold text-lg transition-all shadow-xl shadow-terracotta/20 ${
+              <Link 
+                href="/cursos" 
+                className={`px-10 py-5 rounded-full font-bold text-lg transition-all shadow-xl shadow-terracotta/20 inline-block text-center ${
                   activeCourse.available_slots > 0 
                   ? "bg-terracotta text-white hover:scale-105" 
-                  : "bg-stone-200 text-stone-500 cursor-not-allowed"
+                  : "bg-stone-200 text-stone-500 cursor-not-allowed pointer-events-none"
                 }`}
               >
                 {activeCourse.available_slots > 0 ? "Reservar mi lugar" : "Cupos Agotados"}
-              </button>
+              </Link>
             </div>
 
-            <div className="relative aspect-square md:aspect-auto md:h-[500px] rounded-[30px] overflow-hidden group">
+            <div className="relative aspect-square md:aspect-auto md:h-125 rounded-[30px] overflow-hidden group">
               <Image 
                 src={activeCourse.image_url} 
                 alt="Taller de cerámica" 
                 fill 
                 className="object-cover group-hover:scale-105 transition-transform duration-700" 
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              <div className="absolute inset-0 bg-linear-to-trom-black/20 to-transparent"></div>
             </div>
           </div>
         </section>
@@ -174,12 +173,12 @@ export default function Home() {
 
       {/* RESTO DE SECCIONES (Destacados, Lozas, Tazas, Decoración) */}
       <section className="max-w-7xl mx-auto px-6 pb-28">
-        <h2 className="text-3xl md:text-4xl font-serif mb-12 text-center text-[#2C2C2C]">Productos Destacados</h2>
+        <h2 className="text-3xl md:text-4xl font-serif mb-12 text-center text-carbon">Productos Destacados</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
           {products.map((product) => (
             <Link key={product.id} href={`/tienda/${product.id}`}>
               <div className="group flex flex-col h-full bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500">
-                <div className="relative aspect-[4/5] overflow-hidden">
+                <div className="relative aspect-4/5 overflow-hidden">
                   {product.image_url ? (
                     <Image src={product.image_url} alt={product.name} fill className="object-cover group-hover:scale-110 transition duration-700" />
                   ) : (
@@ -187,8 +186,8 @@ export default function Home() {
                   )}
                   <span className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full text-stone-800 shadow-sm">Pieza Única</span>  
                 </div>
-                <div className="p-6 flex flex-col justify-between flex-grow">
-                  <h3 className="font-serif text-xl mb-2 text-[#2C2C2C] group-hover:text-terracotta transition-colors">{product.name}</h3>
+                <div className="p-6 flex flex-col justify-between grow">
+                  <h3 className="font-serif text-xl mb-2 text-carbon group-hover:text-terracotta transition-colors">{product.name}</h3>
                   <p className="text-xl font-bold text-terracotta">${product.price.toLocaleString('es-CL')}</p>
                 </div>
               </div>
@@ -200,7 +199,7 @@ export default function Home() {
       {/* LOZAS */}
       <section className="bg-[#2D2424] text-white py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+          <div className="lg:col-span-5 relative h-100 md:h-125 rounded-2xl overflow-hidden shadow-2xl">
             <Image src="/lozas.jpg" alt="Lozas artesanales" fill className="object-cover" />
           </div>
           <div className="lg:col-span-7 lg:pl-10">
@@ -218,7 +217,7 @@ export default function Home() {
       <section className="bg-[#fcfaf7] py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 lg:pr-10 order-2 lg:order-1">
-            <h2 className="text-3xl md:text-5xl font-serif mb-6 text-[#2C2C2C]">
+            <h2 className="text-3xl md:text-5xl font-serif mb-6 text-carbon">
               Tazas para tus rituales
             </h2>
             <p className="text-[#5A4A3F] text-lg mb-8 max-w-xl leading-relaxed">
@@ -235,7 +234,7 @@ export default function Home() {
               <ProductCarousel products={tazas} />
             </div>
           </div>
-          <div className="lg:col-span-5 relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-xl order-1 lg:order-2">
+          <div className="lg:col-span-5 relative h-100 md:h-125 rounded-2xl overflow-hidden shadow-xl order-1 lg:order-2">
             <Image src="/tazas.jpg" alt="Tazas cerámicas" fill className="object-cover" />
           </div>
         </div>
@@ -244,7 +243,7 @@ export default function Home() {
       {/* DECORACIÓN */}
       <section className="bg-[#3B2F2F] text-white py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+          <div className="lg:col-span-5 relative h-100 md:h-125 rounded-2xl overflow-hidden shadow-2xl">
             <Image src="/decoracion.jpg" alt="Decoración artesanal" fill className="object-cover" />
           </div>
           <div className="lg:col-span-7 lg:pl-10">

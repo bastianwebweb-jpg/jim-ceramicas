@@ -98,7 +98,7 @@ export default function Navbar() {
 
                 {/* 🔽 MENÚ DESPLEGABLE */}
                 {userMenuOpen && (
-                  <div className="absolute right-0 mt-0 w-48 bg-white shadow-xl rounded-xl border border-stone-100 py-2 z-[60] animate-in fade-in zoom-in duration-200">
+                  <div className="absolute right-0 mt-0 w-48 bg-white shadow-xl rounded-xl border border-stone-100 py-2 z-60 animate-in fade-in zoom-in duration-200">
                     <div className="px-4 py-2 border-b border-stone-50">
                       <p className="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Mi Cuenta</p>
                       <p className="text-xs text-stone-600 truncate font-medium">{user.email}</p>
@@ -138,7 +138,7 @@ export default function Navbar() {
 
       {/* 📱 MOBILE MENU PANEL */}
       {menuOpen && (
-        <div className="fixed inset-0 bg-black/40 z-[100]" onClick={() => setMenuOpen(false)}>
+        <div className="fixed inset-0 bg-black/40 z-100" onClick={() => setMenuOpen(false)}>
           <div 
             className="bg-white w-[80%] h-full p-6 shadow-xl"
             onClick={(e) => e.stopPropagation()}
