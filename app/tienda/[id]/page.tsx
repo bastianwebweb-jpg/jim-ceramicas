@@ -120,6 +120,7 @@ export default async function ProductPage(props: {
                   name: product.name,
                   price: product.price,
                   image_url: product.image_url,
+                  stock: product.stock,
                 }}
               />
               <p className="text-xs text-[#5A4A3F]">
