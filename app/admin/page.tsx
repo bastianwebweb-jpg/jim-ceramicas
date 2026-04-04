@@ -254,14 +254,14 @@ export default function AdminPage() {
 
           <Link
             href="/admin/orders"
-            className="bg-white text-black px-6 py-2 rounded-lg font-medium hover:scale-105 transition"
+            className="flex-1 bg-white text-black px-6 py-3 rounded-xl font-bold hover:scale-105 transition border border-stone-200 flex items-center justify-center text-center"
           >
             Ver pedidos
           </Link>
 
           <Link 
             href="/admin/cursos" 
-            className="w-full py-3 px-6 bg-stone-100 text-stone-800 rounded-xl font-bold hover:bg-stone-200 transition-all flex items-center justify-center gap-2 mt-4"
+            className="flex-1 bg-stone-100 text-stone-800 px-6 py-3 rounded-xl font-bold hover:bg-stone-200 transition-all flex items-center justify-center text-center"
           >
             Gestionar Talleres
           </Link>
