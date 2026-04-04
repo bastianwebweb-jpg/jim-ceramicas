@@ -18,7 +18,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
   const handleAdd = () => {
     addToCart({
       ...product,
-      quantity: 1,
+      
     });
 
     setAdded(true);
