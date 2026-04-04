@@ -13,6 +13,7 @@ interface Course {
   date: string;
   total_slots: number;
   available_slots: number;
+  image_url: string;
 }
 
 export default function AdminCursos() {
@@ -20,6 +21,50 @@ export default function AdminCursos() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
+  const [imageUploading, setImageUploading] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  setImageUploading(true);
+  setMessage({ type: "", text: "" });
+
+  // Limpiar el nombre del archivo (quitar espacios, tildes, etc.)
+  const cleanFileName = file.name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9.-]/g, "");
+
+  // Crear una ruta única en la carpeta 'cursos'
+  const fileName = `cursos/${Date.now()}-${cleanFileName}`;
+
+  // Subir la imagen al storage de Supabase (bucket 'products')
+  const { error } = await supabase.storage
+    .from("products") // Usamos el mismo bucket 'products'
+    .upload(fileName, file);
+
+  if (error) {
+    console.error(error);
+    setMessage({ type: "error", text: "Error subiendo la imagen" });
+    setImageUploading(false);
+    return;
+  }
+
+  // Obtener la URL pública para guardarla en la tabla
+  const { data } = supabase.storage
+    .from("products")
+    .getPublicUrl(fileName);
+
+  // Actualizar el estado del curso con la nueva URL
+  if (course && data.publicUrl) {
+    setCourse({ ...course, image_url: data.publicUrl });
+  }
+
+  setImageUploading(false);
+};
 
   useEffect(() => {
     fetchCourse();
