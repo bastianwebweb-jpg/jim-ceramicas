@@ -59,14 +59,13 @@ export default function CursoDetalle() {
 
   const handleAddToCart = () => {
     if (course.available_slots > 0) {
-      // IMPORTANTE: Asegúrate que 'image_url' es lo que espera tu Context
-      // Si tu contexto espera 'image', cambia la propiedad abajo a image: course.image_url
       addToCart({
         id: course.id,
         name: `Taller: ${course.title}`,
         price: course.price,
         image_url: course.image_url, 
-        isCourse: true 
+        isCourse: true,               // ✅ Coma agregada aquí
+        available_slots: course.available_slots, // ✅ Usamos 'course' y la propiedad correcta
       });
     }
   };
