@@ -16,21 +16,24 @@
     "moduleResolution": "bundler", // 👈 CORRECCIÓN: "node" está en desuso para Next.js
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve", // 👈 RECOMENDADO: Next.js prefiere "preserve" para su propio manejo
+    "jsx": "react-jsx", // 👈 RECOMENDADO: Next.js prefiere "preserve" para su propio manejo
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
