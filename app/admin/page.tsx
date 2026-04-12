@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient"; // 🔥 mejor en cliente
+import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
-
 
 type Product = {
   id: string;
@@ -18,6 +17,7 @@ type Product = {
 export default function AdminPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   const [form, setForm] = useState({
     id: "",
@@ -36,31 +36,26 @@ export default function AdminPage() {
     totalRevenue: 0,
   });
 
-  const [editing, setEditing] = useState(false);
-
-  // 🔄 cargar productos
+  // 🔄 Cargar productos
   const fetchProducts = async () => {
     const { data, error } = await supabase.from("products").select("*");
-
     if (error) {
       console.error(error);
       return;
     }
-
     setProducts(data || []);
   };
 
-  // 📊 stats
+  // 📊 Estadísticas
   const fetchStats = async () => {
-    const { data: products } = await supabase.from("products").select("*");
-    const { data: orders } = await supabase.from("orders").select("*");
+    const { data: productsData } = await supabase.from("products").select("*");
+    const { data: ordersData } = await supabase.from("orders").select("total");
 
     setStats({
-      totalProducts: products?.length || 0,
-      lowStock: products?.filter((p) => p.stock <= 3).length || 0,
-      totalOrders: orders?.length || 0,
-      totalRevenue:
-        orders?.reduce((acc, o) => acc + (o.total || 0), 0) || 0,
+      totalProducts: productsData?.length || 0,
+      lowStock: productsData?.filter((p) => p.stock <= 3).length || 0,
+      totalOrders: ordersData?.length || 0,
+      totalRevenue: ordersData?.reduce((acc, o) => acc + (o.total || 0), 0) || 0,
     });
   };
 
@@ -69,18 +64,17 @@ export default function AdminPage() {
     fetchStats();
   }, []);
 
-  // ✏️ cambios
+  // ✏️ Manejar cambios en el formulario
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 🖼 subir imagen
+  // 🖼 Subir imagen a Storage
   const handleImageUpload = async (e: any) => {
     const file = e.target.files[0];
     if (!file) return;
 
     setLoading(true);
-
     const cleanFileName = file.name
       .toLowerCase()
       .normalize("NFD")
@@ -90,9 +84,7 @@ export default function AdminPage() {
 
     const fileName = `products/${Date.now()}-${cleanFileName}`;
 
-    const { error } = await supabase.storage
-      .from("products")
-      .upload(fileName, file);
+    const { error } = await supabase.storage.from("products").upload(fileName, file);
 
     if (error) {
       console.error(error);
@@ -101,29 +93,20 @@ export default function AdminPage() {
       return;
     }
 
-    const { data } = supabase.storage
-      .from("products")
-      .getPublicUrl(fileName);
-
-    setForm((prev) => ({
-      ...prev,
-      image_url: data.publicUrl,
-    }));
-
+    const { data } = supabase.storage.from("products").getPublicUrl(fileName);
+    setForm((prev) => ({ ...prev, image_url: data.publicUrl }));
     setLoading(false);
   };
 
-  // ➕ crear / editar
+  // ➕ Crear o Editar Producto
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
     if (!form.name || !form.price) {
       alert("Faltan campos obligatorios");
       return;
     }
 
     setLoading(true);
-
     const productData = {
       name: form.name,
       category: form.category,
@@ -133,60 +116,31 @@ export default function AdminPage() {
       stock: Number(form.stock),
     };
 
-    let error;
-
-    if (editing) {
-      const res = await supabase
-        .from("products")
-        .update(productData)
-        .eq("id", form.id);
-
-      error = res.error;
-    } else {
-      const res = await supabase
-        .from("products")
-        .insert([productData]);
-
-      error = res.error;
-    }
+    const { error } = editing 
+      ? await supabase.from("products").update(productData).eq("id", form.id)
+      : await supabase.from("products").insert([productData]);
 
     if (error) {
       console.error(error);
       alert("Error guardando producto");
-      setLoading(false);
-      return;
+    } else {
+      setForm({ id: "", name: "", category: "", price: "", description: "", image_url: "", stock: "" });
+      setEditing(false);
+      await fetchProducts();
+      await fetchStats();
     }
-
-    // reset
-    setForm({
-      id: "",
-      name: "",
-      category: "",
-      price: "",
-      description: "",
-      image_url: "",
-      stock: "",
-    });
-
-    setEditing(false);
-
-    await fetchProducts();
-    await fetchStats();
-
     setLoading(false);
   };
 
-  // 🗑 eliminar
+  // 🗑 Eliminar Producto
   const deleteProduct = async (id: string) => {
     if (!confirm("¿Eliminar producto?")) return;
-
     await supabase.from("products").delete().eq("id", id);
-
     fetchProducts();
     fetchStats();
   };
 
-  // ✏️ editar
+  // ✏️ Cargar datos para editar
   const editProduct = (product: Product) => {
     setForm({
       ...product,
@@ -194,154 +148,134 @@ export default function AdminPage() {
       stock: String(product.stock),
     });
     setEditing(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <div className="min-h-screen bg-[#f5f0e8] p-10">
-
       {/* HEADER */}
-      <div className="max-w-6xl mx-auto mb-10">
-        <h1 className="text-4xl font-serif text-carbon mb-2">
-          Panel de Administración
-        </h1>
-        <p className="text-[#5A4A3F]">
-          Gestiona tus piezas artesanales
-        </p>
-      </div>
-      {/* DASHBOARD 2 */}
-      <div className="max-w-6xl mx-auto mb-10 grid md:grid-cols-4 gap-6">
-
-        {/* 📦 PRODUCTOS */}
-        <div className="bg-white p-6 rounded-2xl shadow border border-[#e5ded3]">
-          <p className="text-sm text-gray-500">Productos</p>
-          <h3 className="text-2xl font-bold">{stats.totalProducts}</h3>
-        </div>
-
-        {/* ⚠️ STOCK */}
-        <div className="bg-white p-6 rounded-2xl shadow border border-[#e5ded3]">
-          <p className="text-sm text-gray-500">Stock bajo</p>
-          <h3 className="text-2xl font-bold text-orange-500">
-            {stats.lowStock}
-          </h3>
-        </div>
-
-        {/* 🛒 ÓRDENES */}
-        <div className="bg-white p-6 rounded-2xl shadow border border-[#e5ded3]">
-          <p className="text-sm text-gray-500">Órdenes</p>
-          <h3 className="text-2xl font-bold">{stats.totalOrders}</h3>
-        </div>
-
-        {/* 💰 INGRESOS */}
-        <div className="bg-white p-6 rounded-2xl shadow border border-[#e5ded3]">
-          <p className="text-sm text-gray-500">Ingresos</p>
-          <h3 className="text-2xl font-bold text-terracotta">
-            ${stats.totalRevenue}
-          </h3>
-        </div>
-
+      <div className="max-w-6xl mx-auto mb-10 text-center md:text-left">
+        <h1 className="text-4xl font-serif text-stone-800 mb-2">Panel de Administración</h1>
+        <p className="text-stone-600">Gestiona tus piezas artesanales y logística</p>
       </div>
 
-      {/* 🚀 ACCESO RÁPIDO A PEDIDOS */}
+      {/* 📊 DASHBOARD STATS */}
       <div className="max-w-6xl mx-auto mb-10">
-        <div className="bg-linear-to-r from-black to-carbon text-white p-6 rounded-2xl shadow-lg flex items-center justify-between">
-
-          <div>
-            <p className="text-sm opacity-70">Gestión</p>
-            <h3 className="text-xl font-semibold">
-              Administrar pedidos
-            </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+            <p className="text-xs font-bold uppercase text-stone-400 tracking-wider">Productos</p>
+            <h3 className="text-3xl font-serif text-stone-800">{stats.totalProducts}</h3>
           </div>
-
-          <Link
-            href="/admin/orders"
-            className="flex-1 bg-white text-black px-6 py-3 rounded-xl font-bold hover:scale-105 transition border border-stone-200 flex items-center justify-center text-center"
-          >
-            Ver pedidos
-          </Link>
-
-          <Link 
-            href="/admin/cursos" 
-            className="flex-1 bg-stone-100 text-stone-800 px-6 py-3 rounded-xl font-bold hover:bg-stone-200 transition-all flex items-center justify-center text-center"
-          >
-            Gestionar Talleres
-          </Link>
-
-        </div>
-      </div>
-{/* 🔥 AGREGA ESTO AQUÍ (DEBAJO DE LA LÍNEA 240) */}
-      <div className="max-w-6xl mx-auto mb-10">
-        <div className="bg-white border border-stone-200 p-6 rounded-2xl shadow-sm flex items-center justify-between">
-          <div>
-            <p className="text-sm text-stone-500">Talleres</p>
-            <h3 className="text-xl font-semibold text-stone-800">
-              Gestionar Cursos
-            </h3>
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+            <p className="text-xs font-bold uppercase text-stone-400 tracking-wider">Stock Bajo</p>
+            <h3 className="text-3xl font-serif text-orange-500">{stats.lowStock}</h3>
           </div>
-          <Link
-            href="/admin/cursos"
-            className="bg-terracotta text-white px-6 py-2 rounded-lg font-medium hover:scale-105 transition"
-          >
-            Editar cursos
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+            <p className="text-xs font-bold uppercase text-stone-400 tracking-wider">Órdenes</p>
+            <h3 className="text-3xl font-serif text-stone-800">{stats.totalOrders}</h3>
+          </div>
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+            <p className="text-xs font-bold uppercase text-stone-400 tracking-wider">Ingresos</p>
+            <h3 className="text-3xl font-serif text-terracotta">${stats.totalRevenue.toLocaleString("es-CL")}</h3>
+          </div>
+        </div>
+
+        {/* 🚀 ACCESOS DIRECTOS */}
+        <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <Link href="/admin/orders" className="bg-stone-900 text-white p-8 rounded-3xl shadow-lg flex justify-between items-center group transition-transform hover:scale-[1.01]">
+            <div>
+              <p className="text-xs font-bold uppercase opacity-50 tracking-widest mb-1">Logística</p>
+              <h3 className="text-2xl font-serif">Gestionar Pedidos</h3>
+            </div>
+            <span className="text-5xl group-hover:translate-x-2 transition-transform">📦</span>
+          </Link>
+
+          <Link href="/admin/cursos" className="bg-white border border-stone-200 p-8 rounded-3xl shadow-sm flex justify-between items-center group transition-transform hover:scale-[1.01]">
+            <div>
+              <p className="text-xs font-bold uppercase text-stone-400 tracking-widest mb-1">Formación</p>
+              <h3 className="text-2xl font-serif text-stone-800">Administrar Talleres</h3>
+            </div>
+            <span className="text-5xl group-hover:translate-x-2 transition-transform">🏺</span>
           </Link>
         </div>
       </div>
 
-      {/* FORM */}
-      <div className="max-w-6xl mx-auto mb-12 bg-white rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-serif mb-6">
-          {editing ? "Editar producto" : "Nuevo producto"}
+      {/* 📝 FORMULARIO DE PRODUCTOS */}
+      <div className="max-w-6xl mx-auto mb-16 bg-white rounded-3xl shadow-sm border border-stone-100 p-8">
+        <h2 className="text-2xl font-serif mb-8 text-stone-800">
+          {editing ? "Editar Producto" : "Agregar Nueva Pieza"}
         </h2>
-
         <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
-
-          <input name="name" placeholder="Nombre" value={form.name} onChange={handleChange} className="p-3 border rounded-lg" />
-
-          <input name="category" placeholder="Categoría" value={form.category} onChange={handleChange} className="p-3 border rounded-lg" />
-
-          <input name="price" type="number" placeholder="Precio" value={form.price} onChange={handleChange} className="p-3 border rounded-lg" />
-
-          <input name="stock" type="number" placeholder="Stock" value={form.stock} onChange={handleChange} className="p-3 border rounded-lg" />
-
-          <input name="image_url" placeholder="URL imagen" value={form.image_url} onChange={handleChange} className="p-3 border rounded-lg col-span-2" />
-
-          <input type="file" onChange={handleImageUpload} className="col-span-2" />
-
-          {form.image_url && (
-            <img src={form.image_url} className="col-span-2 h-40 object-cover rounded-lg" />
-          )}
-
-          <textarea name="description" placeholder="Descripción" value={form.description} onChange={handleChange} className="p-3 border rounded-lg col-span-2" />
-
-          <button disabled={loading} className="col-span-2 bg-terracotta text-white py-3 rounded-lg">
-            {loading ? "Guardando..." : editing ? "Actualizar producto" : "Crear producto"}
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-bold uppercase text-stone-400 ml-1">Nombre de la pieza</label>
+            <input name="name" placeholder="Ej: Jarro de gres" value={form.name} onChange={handleChange} className="p-4 bg-stone-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-terracotta/20" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-bold uppercase text-stone-400 ml-1">Categoría</label>
+            <input name="category" placeholder="Ej: Cocina, Decoración" value={form.category} onChange={handleChange} className="p-4 bg-stone-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-terracotta/20" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-bold uppercase text-stone-400 ml-1">Precio ($)</label>
+            <input name="price" type="number" placeholder="29990" value={form.price} onChange={handleChange} className="p-4 bg-stone-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-terracotta/20" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-bold uppercase text-stone-400 ml-1">Stock Disponible</label>
+            <input name="stock" type="number" placeholder="10" value={form.stock} onChange={handleChange} className="p-4 bg-stone-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-terracotta/20" />
+          </div>
+          <div className="col-span-2 flex flex-col gap-2">
+            <label className="text-xs font-bold uppercase text-stone-400 ml-1">Descripción</label>
+            <textarea name="description" placeholder="Detalles de la pieza..." value={form.description} onChange={handleChange} className="p-4 bg-stone-50 border-none rounded-2xl h-32 outline-none focus:ring-2 focus:ring-terracotta/20" />
+          </div>
+          <div className="col-span-2 flex flex-col gap-2">
+            <label className="text-xs font-bold uppercase text-stone-400 ml-1">Imagen del Producto</label>
+            <input type="file" onChange={handleImageUpload} className="p-4 border-2 border-dashed border-stone-200 rounded-2xl text-stone-500 cursor-pointer hover:bg-stone-50 transition-colors" />
+            {form.image_url && (
+              <div className="relative w-full h-48 mt-2 overflow-hidden rounded-2xl border border-stone-100">
+                <img src={form.image_url} alt="Vista previa" className="w-full h-full object-cover" />
+              </div>
+            )}
+          </div>
+          <button disabled={loading} className="col-span-2 bg-terracotta text-white py-5 rounded-2xl font-bold text-lg shadow-md hover:bg-opacity-90 transition-all active:scale-[0.98]">
+            {loading ? "Procesando..." : editing ? "Actualizar Información" : "Publicar Producto"}
           </button>
-
+          {editing && (
+            <button type="button" onClick={() => { setEditing(false); setForm({ id: "", name: "", category: "", price: "", description: "", image_url: "", stock: "" }); }} className="col-span-2 text-stone-400 hover:text-stone-600 font-medium">
+              Cancelar Edición
+            </button>
+          )}
         </form>
       </div>
 
-      {/* PRODUCTOS */}
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
-        {products.map((p) => (
-          <div key={p.id} className="bg-white rounded-2xl shadow p-4">
-
-            <img src={p.image_url} className="h-40 w-full object-cover rounded-lg mb-4" />
-
-            <h3 className="font-semibold">{p.name}</h3>
-            <p className="text-terracotta font-bold">${p.price}</p>
-            <p className="text-sm">Stock: {p.stock}</p>
-
-            <div className="flex gap-2 mt-4">
-              <button onClick={() => editProduct(p)} className="flex-1 bg-blue-500 text-white py-2 rounded">
-                Editar
-              </button>
-
-              <button onClick={() => deleteProduct(p.id)} className="flex-1 bg-red-500 text-white py-2 rounded">
-                Eliminar
-              </button>
+      {/* 🏺 INVENTARIO DE PRODUCTOS */}
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-2xl font-serif mb-8 text-stone-800 italic">Inventario Actual</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {products.map((p) => (
+            <div key={p.id} className="bg-white rounded-3xl shadow-sm border border-stone-100 overflow-hidden hover:shadow-md transition-shadow group">
+              <div className="relative h-64 w-full overflow-hidden">
+                <img src={p.image_url} alt={p.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-stone-800">
+                  {p.stock} unid.
+                </div>
+              </div>
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="font-serif text-xl text-stone-800">{p.name}</h3>
+                  <p className="text-terracotta font-bold text-lg">${p.price.toLocaleString("es-CL")}</p>
+                </div>
+                <p className="text-stone-500 text-sm line-clamp-2 mb-6">{p.description}</p>
+                <div className="flex gap-3">
+                  <button onClick={() => editProduct(p)} className="flex-1 bg-stone-100 text-stone-700 py-3 rounded-xl font-bold hover:bg-stone-200 transition-colors">
+                    Editar
+                  </button>
+                  <button onClick={() => deleteProduct(p.id)} className="flex-1 bg-red-50 text-red-600 py-3 rounded-xl font-bold hover:bg-red-100 transition-colors">
+                    Eliminar
+                  </button>
+                </div>
+              </div>
             </div>
-
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
